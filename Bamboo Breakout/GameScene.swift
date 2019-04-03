@@ -30,6 +30,12 @@ let PaddleCategoryName = "paddle"
 let BlockCategoryName = "block"
 let GameMessageName = "gameMessage"
 var isFingerOnPaddle = false
+let BallCategory   : UInt32 = 0x1 << 0
+let BottomCategory : UInt32 = 0x1 << 1
+let BlockCategory  : UInt32 = 0x1 << 2
+let PaddleCategory : UInt32 = 0x1 << 3
+let BorderCategory : UInt32 = 0x1 << 4
+
 
 
 class GameScene: SKScene {
@@ -64,6 +70,31 @@ class GameScene: SKScene {
             }
         }
     }
+    
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // 1
+        if isFingerOnPaddle {
+            // 2
+            let touch = touches.first
+            let touchLocation = touch!.location(in: self)
+            let previousLocation = touch!.previousLocation(in: self)
+            // 3
+            let paddle = childNode(withName: PaddleCategoryName) as! SKSpriteNode
+            // 4
+            var paddleX = paddle.position.x + (touchLocation.x - previousLocation.x)
+            // 5
+            paddleX = max(paddleX, paddle.size.width/2)
+            paddleX = min(paddleX, size.width - paddle.size.width/2)
+            // 6
+            paddle.position = CGPoint(x: paddleX, y: paddle.position.y)
+        }
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isFingerOnPaddle = false
+    }
+
 
   
 }
