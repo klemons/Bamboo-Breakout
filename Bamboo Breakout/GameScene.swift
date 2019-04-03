@@ -36,6 +36,19 @@ class GameScene: SKScene {
   override func didMove(to view: SKView) {
     super.didMove(to: view)
     
+    // 1
+    let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+    // 2
+    borderBody.friction = 0
+    // 3
+    self.physicsBody = borderBody
+
+    physicsWorld.gravity = CGVector(dx: 0.0, dy: 0.0)
+    
+    let ball = childNode(withName: BallCategoryName) as! SKSpriteNode
+    ball.physicsBody!.applyImpulse(CGVector(dx: 2.0, dy: -2.0))
+
+    
   }
   
   
