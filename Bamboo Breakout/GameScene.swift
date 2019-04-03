@@ -29,6 +29,7 @@ let BallCategoryName = "ball"
 let PaddleCategoryName = "paddle"
 let BlockCategoryName = "block"
 let GameMessageName = "gameMessage"
+var isFingerOnPaddle = false
 
 
 class GameScene: SKScene {
@@ -50,6 +51,19 @@ class GameScene: SKScene {
 
     
   }
-  
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        let touchLocation = touch!.location(in: self)
+        
+        if let body = physicsWorld.body(at: touchLocation) {
+            if body.node!.name == PaddleCategoryName {
+                print("Began touch on paddle")
+                isFingerOnPaddle = true
+            }
+        }
+    }
+
   
 }
