@@ -69,7 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     paddle.physicsBody!.categoryBitMask = PaddleCategory
     borderBody.categoryBitMask = BorderCategory
 
-    ball.physicsBody!.contactTestBitMask = BottomCategory
+    ball.physicsBody!.contactTestBitMask = BottomCategory | BlockCategory
 
     
     // 1
@@ -113,10 +113,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if firstBody.categoryBitMask == BallCategory && secondBody.categoryBitMask == BottomCategory {
             print("Hit bottom. First contact has been made.")
         }
+        
+        if firstBody.categoryBitMask == BallCategory && secondBody.categoryBitMask == BlockCategory {
+            breakBlock(node: secondBody.node!)
+            //TODO: check if the game has been won
+        }
+
     }
 
     
-    
+    //When the player touches the paddle
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         let touchLocation = touch!.location(in: self)
@@ -129,7 +135,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    
+    //When the player moves the paddle
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         // 1
         if isFingerOnPaddle {
@@ -148,9 +154,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             paddle.position = CGPoint(x: paddleX, y: paddle.position.y)
         }
     }
-
+    
+    //When the player stops touching the paddle
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isFingerOnPaddle = false
+    }
+
+    //Block Break function
+    func breakBlock(node: SKNode) {
+        let particles = SKEmitterNode(fileNamed: "BrokenPlatform")!
+        particles.position = node.position
+        particles.zPosition = 3
+        addChild(particles)
+        particles.run(SKAction.sequence([SKAction.wait(forDuration: 1.0),
+                                         SKAction.removeFromParent()]))
+        node.removeFromParent()
     }
 
 
