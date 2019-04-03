@@ -38,7 +38,7 @@ let BorderCategory : UInt32 = 0x1 << 4
 
 
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
   
   override func didMove(to view: SKView) {
     super.didMove(to: view)
@@ -51,11 +51,26 @@ class GameScene: SKScene {
     self.physicsBody = borderBody
 
     physicsWorld.gravity = CGVector(dx: 0.0, dy: 0.0)
+    physicsWorld.contactDelegate = self
+
     
     let ball = childNode(withName: BallCategoryName) as! SKSpriteNode
     ball.physicsBody!.applyImpulse(CGVector(dx: 2.0, dy: -2.0))
 
+    let bottomRect = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: 1)
+    let bottom = SKNode()
+    bottom.physicsBody = SKPhysicsBody(edgeLoopFrom: bottomRect)
+    addChild(bottom)
+
+    let paddle = childNode(withName: PaddleCategoryName) as! SKSpriteNode
     
+    bottom.physicsBody!.categoryBitMask = BottomCategory
+    ball.physicsBody!.categoryBitMask = BallCategory
+    paddle.physicsBody!.categoryBitMask = PaddleCategory
+    borderBody.categoryBitMask = BorderCategory
+
+    ball.physicsBody!.contactTestBitMask = BottomCategory
+
   }
     
     
