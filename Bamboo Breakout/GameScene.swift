@@ -61,10 +61,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     let blipSound = SKAction.playSoundFileNamed("pongblip", waitForCompletion: false)
-    let blipPaddleSound = SKAction.playSoundFileNamed("paddleBlip", waitForCompletion: false)
-    let bambooBreakSound = SKAction.playSoundFileNamed("BambooBreak", waitForCompletion: false)
+    let blipPaddleSound = SKAction.playSoundFileNamed("bat+hit+ball", waitForCompletion: false)
+    let bambooBreakSound = SKAction.playSoundFileNamed("caughtball", waitForCompletion: false)
     let gameWonSound = SKAction.playSoundFileNamed("game-won", waitForCompletion: false)
-    let gameOverSound = SKAction.playSoundFileNamed("game-over", waitForCompletion: false)
+    let gameOverSound = SKAction.playSoundFileNamed("out", waitForCompletion: false)
 
 
   
